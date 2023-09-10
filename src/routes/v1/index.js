@@ -1,5 +1,6 @@
 const express = require('express');
 const { signUp, signIn, isAuthenticated, isAdmin }  = require('../../controllers/auth-controller');
+const { create } = require('../../controllers/product-controller');
 const { validateUserAuth, validateIsAdminRequest } = require('../../middlewares/auth-requerst-validators');
 const router = express.Router();
 
@@ -10,5 +11,7 @@ router.post('/login', validateUserAuth, signIn);
 router.get('/isAuthenticated', isAuthenticated);
 
 router.get('/isAdmin', validateIsAdminRequest, isAdmin);
+
+router.post('/products', create);
 
 module.exports = router;
