@@ -5,11 +5,24 @@ const validateUserAuth = (req, res, next) => {
             data: {},
             message: 'Something went wrong',
             err: 'Email or password missing in the request'
-        })
+        });
+    }
+    next();
+}
+
+const validateIsAdminRequest = (req, res, next) => {
+    if(!req.body._id){
+        return res.status(400).json({
+            success: false,
+            data: {},
+            message: 'Something went wrong',
+            err: 'User id not given'
+        });
     }
     next();
 }
 
 module.exports = {
     validateUserAuth,
+    validateIsAdminRequest
 }
