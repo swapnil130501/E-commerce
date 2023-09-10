@@ -9,6 +9,15 @@ class UserService {
         this.userRepository = new UserRepository();
     }
 
+    async getUserByEmail(email) {
+        try {
+            const user = await this.userRepository.findBy({email});
+            return user;
+        } catch(error) {
+            throw error;
+        }
+    }
+
     async signUp(data){
         try {
             console.log(data);
@@ -23,7 +32,7 @@ class UserService {
     async signIn(email, plainPassword) {
         try {
             // step 1-> fetch the user using the email
-            const user = await this.userRepository.findBy({email});
+            const user = await this.getUserByEmail(email);
             // step 2-> compare incoming plain password with the stored encrypted password
             const passwordsMatch = this.checkPassword(plainPassword, user.password);
 
@@ -36,6 +45,23 @@ class UserService {
             return newJWT;
         } catch (error) {
             console.log("Something went wrong in the sign in process");
+            throw error;
+        }
+    }
+
+    async isAuthenticated(token) {
+        try {
+            const response = this.verifyToken(token);
+            if(!response){
+                throw {error: 'Invalid token'};
+            }
+            const user = this.getUserByEmail(response.id);
+            if(!user){
+                throw {error: 'No user with the corresponding email exists'};
+            }
+            return user.id;
+        } catch (error) {
+            console.log("Something went wrong in auth process");
             throw error;
         }
     }
