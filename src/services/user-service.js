@@ -41,10 +41,27 @@ class UserService {
                 throw {error: 'Incorrect password'};
             }
             // step 3-> if the passwords match, create a token and send it to the user
-            const newJWT = this.createToken({email: user.email, id: user.id});
+            const newJWT = this.createToken({email: user.email, id: user._id});
             return newJWT;
         } catch (error) {
             console.log("Something went wrong in the sign in process");
+            throw error;
+        }
+    }
+
+    async deleteUser(userId, token){
+        try {
+            const user = await this.userRepository.get(userId);
+            if(!user){
+                throw {error: 'User not found'};
+            }
+            let verificationResponse = this.verifyToken(token);
+            if(!verificationResponse){
+                throw {error: 'Token verification error'};
+            }
+            await this.userRepository.destroy(user._id);
+            return true;
+        } catch (error) {
             throw error;
         }
     }
@@ -55,7 +72,7 @@ class UserService {
             if(!response){
                 throw {error: 'Invalid token'};
             }
-            const user = this.getUserByEmail(response.id);
+            const user = this.getUserByEmail(response._id);
             if(!user){
                 throw {error: 'No user with the corresponding email exists'};
             }
