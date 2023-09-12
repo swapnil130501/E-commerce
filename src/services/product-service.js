@@ -14,6 +14,15 @@ class ProductService{
             throw error;
         }
     }
+    async getProduct(productId){
+        try {
+            const product = this.productRepository.get(productId);
+            return product;
+        } catch (error) {
+            console.log(error);
+            throw error;            
+        }
+    }
 }
 
 module.exports = ProductService;

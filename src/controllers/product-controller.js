@@ -22,6 +22,27 @@ const createProduct = async (req, res) => {
     }
 }
 
+const getProduct = async (req, res) => {
+    try {
+        const response = await productService.getProduct(req.params.id);
+        return res.status(200).json({
+            data: response,
+            message: "Successfully fetched Product",
+            err: {},
+            success: true
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            data: {},
+            message: "Cannot fetch Product",
+            err: error,
+            success: false
+        });
+    }
+}
+
 module.exports = {
-    createProduct
+    createProduct,
+    getProduct
 }

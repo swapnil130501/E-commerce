@@ -23,9 +23,11 @@ router.get('/isAuthenticated', isAuthenticated);
 router.get('/isAdmin', validateIsAdminRequest, isAdmin);
 
 const { 
-    createProduct 
+    createProduct ,
+    getProduct
 } = require('../../controllers/product-controller');
 
 router.post('/product', createProduct);
+router.get('/product/:id', getProduct);
 
 module.exports = router;
