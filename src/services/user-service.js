@@ -66,6 +66,23 @@ class UserService {
         }
     }
 
+    async updateUser(userId, data, token){
+        try {
+            const user = await this.userRepository.get(userId);
+            if(!user){
+                throw {error: 'User not found'};
+            }
+            let verificationResponse = this.verifyToken(token);
+            if(!verificationResponse){
+                throw {error: 'Token verification error'};
+            }
+            const response = await this.userRepository.update(user._id, data);
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    }
+
     async isAuthenticated(token) {
         try {
             const response = this.verifyToken(token);

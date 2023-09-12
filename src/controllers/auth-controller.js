@@ -66,6 +66,27 @@ const deleteUser = async (req, res) => {
     }
 }
 
+const updateUser = async (req, res) => {
+    try {
+        const token = req.headers['x-access-token'];
+        const response = await userService.updateUser(req.params.id, req.body, token);
+        return res.status(200).json({
+            data: response,
+            message: "Successfully updated User",
+            err: {},
+            success: true
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            data: {},
+            message: "Cannot update User",
+            err: error,
+            success: false
+        });
+    }
+}
+
 const isAuthenticated = async (req, res) => {
     try {
         const token = req.headers['x-access-token'];
@@ -111,6 +132,7 @@ module.exports = {
     signUp,
     signIn,
     deleteUser,
+    updateUser,
     isAuthenticated,
     isAdmin
 }
