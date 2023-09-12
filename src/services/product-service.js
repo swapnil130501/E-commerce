@@ -1,21 +1,16 @@
-const { ProductRepository } = require('.././repository/index');
+const { ProductRepository } = require('../repository/index');
 
 class ProductService{
     constructor(){
-       this.productService = new ProductRepository();
+       this.productRepository = new ProductRepository();
     }
 
-    async createProduct(user, data) {
+    async createProduct(data){
         try {
-            if(user.role!='admin'){
-                console.log('only a admin can list a product');
-            }  
-            console.log(data);
-            const product = await this.productService.create(data);
-            console.log(product);
-            return product;
+            const response = await this.productRepository.create(data);
+            return response;
         } catch (error) {
-            console.log('something went wrong in the service layer');
+            console.log(error);
             throw error;
         }
     }

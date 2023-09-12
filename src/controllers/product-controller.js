@@ -2,25 +2,26 @@ const ProductService = require('../services/product-service');
 
 const productService = new ProductService();
 
-const create = async (req, res) => {
+const createProduct = async (req, res) => {
     try {
-        const response = await productService.createProduct(req.user, req.body);
-        return res.status(201).json({
-            success: true,
-            message: 'Successfully created a new product',
+        const response = await productService.createProduct(req.body);
+        return res.status(200).json({
             data: response,
-            err: {}
+            message: "Successfully created a Product",
+            err: {},
+            success: true
         });
-    } catch (err) {
+    } catch (error) {
+        console.log(error);
         return res.status(500).json({
-            success: false,
-            message: 'Something went wrong',
             data: {},
-            err: err
+            message: "Cannot create a Product",
+            err: error,
+            success: false
         });
     }
 }
 
 module.exports = {
-    create
+    createProduct
 }
