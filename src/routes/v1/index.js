@@ -24,10 +24,16 @@ router.get('/isAdmin', validateIsAdminRequest, isAdmin);
 
 const { 
     createProduct ,
-    getProduct
+    getProduct,
+    getAllProducts,
+    deleteProduct,
+    updateProduct
 } = require('../../controllers/product-controller');
 
 router.post('/product', createProduct);
 router.get('/product/:id', getProduct);
+router.get('/product', getAllProducts);
+router.delete('/product/:id', deleteProduct);
+router.patch('/product/:id', updateProduct);
 
 module.exports = router;

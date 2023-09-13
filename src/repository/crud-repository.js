@@ -32,9 +32,9 @@ class CrudRepository {
         }
     }
 
-    async getAll() {
+    async getAll(offset, limit) {
         try {
-            const result = await this.model.find({});
+            const result = await this.model.find().skip(offset).limit(limit);
             return result;
         } catch (error) {
             console.log("Something went wrong in crud repo");

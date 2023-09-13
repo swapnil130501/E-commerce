@@ -128,6 +128,7 @@ class UserService {
             throw error;
         }
     }
+    
     isAdmin(userId){
         try {
             const response =  this.userRepository.isAdmin(userId);
