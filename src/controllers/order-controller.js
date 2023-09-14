@@ -4,8 +4,8 @@ const orderService = new OrderService();
 
 const placeOrder = async (req, res) => {
     try {
-        //const token = req.headers['x-access-token'];
-        const response = await orderService.createOrder(req.body.userId, req.body.productId, req.body.deliveryType);
+        const token = req.headers['x-access-token'];
+        const response = await orderService.createOrder(req.body.userId, req.body.productId, req.body.deliveryType, token);
         return res.status(200).json({
             data: response,
             message: "Successfully placed the order",
