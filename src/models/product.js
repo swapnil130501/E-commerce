@@ -18,6 +18,11 @@ const productSchema = new mongoose.Schema({
     color: {
         type: String
     },
+    quantity: {
+        type: Number,
+        required: true,
+        default: 0
+    },
     inStock: {
         type: Boolean,
         required: true

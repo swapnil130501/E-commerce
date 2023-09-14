@@ -36,4 +36,10 @@ router.get('/product', getAllProducts);
 router.delete('/product/:id', deleteProduct);
 router.patch('/product/:id', updateProduct);
 
+const {
+    placeOrder
+} = require('../../controllers/order-controller');
+
+router.post('/order/place', placeOrder);
+
 module.exports = router;
