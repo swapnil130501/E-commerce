@@ -1,12 +1,18 @@
 const { ProductRepository } = require('../repository/index');
+const UserService = require('./user-service');
 
 class ProductService{
     constructor(){
        this.productRepository = new ProductRepository();
+       this.userService = new UserService();
     }
 
-    async createProduct(data){
+    async createProduct(data, userId){
         try {
+            const isAdmin = await this.userService.isAdmin(userId);
+            if (!isAdmin) {
+                throw new Error('Only admins can create products');
+            }
             const response = await this.productRepository.create(data);
             return response;
         } catch (error) {
@@ -14,6 +20,7 @@ class ProductService{
             throw error;
         }
     }
+
     async getProduct(productId){
         try {
             const product = this.productRepository.get(productId);
@@ -34,8 +41,12 @@ class ProductService{
         }
     }
 
-    async deleteProduct(productId){
+    async deleteProduct(productId, userId){
         try {
+            const isAdmin = await this.userService.isAdmin(userId);
+            if (!isAdmin) {
+                throw new Error('Only admins can delete products');
+            }
             await this.productRepository.destroy(productId);
             return true;
         } catch (error) {
@@ -44,8 +55,12 @@ class ProductService{
         }
     }
 
-    async updateProduct(productId, data){
+    async updateProduct(productId, data, userId){
         try {
+            const isAdmin = await this.userService.isAdmin(userId);
+            if (!isAdmin) {
+                throw new Error('Only admins can update products');
+            }
             console.log(data);
             const response = await this.productRepository.update(productId, data);
             return response;

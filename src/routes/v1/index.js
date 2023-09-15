@@ -40,7 +40,6 @@ const {
     placeOrder,
     getOrderDetails,
     cancelOrder,
-    isDelivered
 } = require('../../controllers/order-controller');
 
 router.post('/order/place', placeOrder);

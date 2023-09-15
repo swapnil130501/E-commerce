@@ -4,7 +4,7 @@ const productService = new ProductService();
 
 const createProduct = async (req, res) => {
     try {
-        const response = await productService.createProduct(req.body);
+        const response = await productService.createProduct(req.body, req.body.userId);
         return res.status(200).json({
             data: response,
             message: "Successfully created a Product",
@@ -64,7 +64,7 @@ const getAllProducts = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
     try {
-        const response = await productService.deleteProduct(req.params.id);
+        const response = await productService.deleteProduct(req.params.id, req.body.userId);
         return res.status(200).json({
             data: response,
             message: "Successfully deleted the Product",
@@ -84,7 +84,7 @@ const deleteProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
     try {
-        const response = await productService.updateProduct(req.params.id, req.body);
+        const response = await productService.updateProduct(req.params.id, req.body, req.body.userId);
         return res.status(200).json({
             data: response,
             message: "Successfully updated the Product",
