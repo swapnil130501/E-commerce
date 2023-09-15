@@ -9,24 +9,19 @@ class OrderService {
         this.productService = new ProductService();
     }
 
-    async createOrder(userId, productId, deliveryType = 'Normal', token) {
+    async createOrder(userId, productId, deliveryType, token) {
         try {
-            const user = this.userService.isAuthenticated(token);
-            if(!user){
-                console.log('user not authenticated');
-            }
+            await this.userService.isAuthenticated(token);
             // Fetch the product details
             const product = await this.productService.getProduct(productId);
         
             if (!product) {
                 throw new Error('Product not found');
             }
-        
             // Check product availability
             if (product.quantity <= 0) {
                 throw new Error('Product is out of stock');
             }
-        
             // Create a new order directly in the database, with valid userId and productId references
             const createdOrder = await this.orderRepository.create({
                 userId: userId,
@@ -34,19 +29,47 @@ class OrderService {
                 deliveryType: deliveryType,
                 status: 'Placed'
             });
-        
             // Update product availability
             product.quantity -= 1;
         
             if (product.quantity === 0) {
                 product.inStock = false;
             }
-        
             await product.save();
-        
             return createdOrder;
         } catch (error) {
             console.error('Error creating order:', error);
+            throw error;
+        }
+    }
+
+    async getOrderDetails(orderId, token){
+        try {
+            await this.userService.isAuthenticated(token);
+            const order = await this.orderRepository.get(orderId);
+            console.log(order);
+            return order;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
+    async cancelOrder(orderId, token) {
+        try {
+            await this.userService.isAuthenticated(token);
+            const order = await this.orderRepository.get(orderId);
+            if (!order) {
+                throw new Error('Order not found');
+            }
+            if (order.status === 'Cancelled') {
+                throw new Error('Order is already cancelled');
+            }
+            order.status = 'Cancelled';
+            const updatedOrder = await order.save();
+            return updatedOrder;
+        } catch (error) {
+            console.log('Error in cancelling order');
             throw error;
         }
     }

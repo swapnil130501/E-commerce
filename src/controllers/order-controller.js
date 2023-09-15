@@ -23,6 +23,49 @@ const placeOrder = async (req, res) => {
     }
 }
 
+const getOrderDetails = async (req, res) => {
+    try {
+        const token = req.headers['x-access-token'];
+        const response = await orderService.getOrderDetails(req.params.id, token);
+        return res.status(200).json({
+            data: response,
+            message: "Successfully fetched the order details",
+            err: {},
+            success: true
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            data: {},
+            message: "Problem occured in fetching the order details",
+            err: error,
+            success: false
+        });
+    }
+}
+
+const cancelOrder = async (req, res) => {
+    try {
+        const token = req.headers['x-access-token'];
+        const response = await orderService.cancelOrder(req.params.id, token);
+        return res.status(200).json({
+            data: response,
+            message: "Successfully cancelled the order",
+            err: {},
+            success: true
+        });
+    } catch (error) {
+        return res.status(500).json({
+            data: {},
+            err: error,
+            message: "Problem occurred in cancelling the order",
+            success: false
+        });
+    }
+}
+
 module.exports = {
-    placeOrder
+    placeOrder,
+    getOrderDetails,
+    cancelOrder,
 }
