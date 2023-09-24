@@ -21,7 +21,7 @@ const orderSchema = new mongoose.Schema({
         type: String,
         enum: ['Placed', 'Pending', 'Cancelled', 'Delivered']
     },
-    transactionId: {
+    razorpayOrderId: {
         type: String
     }
 }, {timestamps: true});
