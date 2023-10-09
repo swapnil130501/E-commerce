@@ -59,6 +59,23 @@ class OrderService {
         }
     }
 
+    async initiatePayment(orderId) {
+        try {
+          // Fetch order details from your database
+          const order = await this.orderRepository.findById(orderId);
+          // Create a Razorpay order object (as in your original code)
+          const amountInPaise = order.product.price * 100;
+          const razorpayOrder = await razorpay.orders.create({
+            amount: amountInPaise,
+            currency: 'INR', // Change to your desired currency code
+            receipt: `order_${order._id}`,
+            });
+          return razorpayOrder;
+        } catch (error) {
+          throw error;
+        }
+    }
+
     async getOrderDetails(orderId, token){
         try {
             await this.userService.isAuthenticated(token);

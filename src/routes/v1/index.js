@@ -46,4 +46,10 @@ router.post('/order/place', placeOrder);
 router.get('/order/:id', getOrderDetails);
 router.get('/order/cancel/:id', cancelOrder);
 
+const {
+    manageCart
+} = require('../../controllers/cart-controller');
+
+router.post('/cart', manageCart)
+
 module.exports = router;
