@@ -52,4 +52,10 @@ const {
 
 router.post('/cart', manageCart)
 
+const {
+    createReview
+} = require('../../controllers/review-controller');
+
+router.post('/product/review', createReview);
+
 module.exports = router;
