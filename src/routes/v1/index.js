@@ -53,9 +53,13 @@ const {
 router.post('/cart', manageCart)
 
 const {
-    createReview
+    createReview,
+    deleteReview,
+    getReviewsByRating
 } = require('../../controllers/review-controller');
 
 router.post('/product/review', createReview);
+router.delete('/product/review/:id', deleteReview);
+router.get('/products/review/:rating', getReviewsByRating);
 
 module.exports = router;

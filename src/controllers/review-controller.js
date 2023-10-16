@@ -23,6 +23,48 @@ const createReview = async (req, res) => {
     }
 }
 
+const deleteReview = async (req, res) => {
+    try {
+        const response = await reviewService.deleteReview(req.params.id);
+        return res.status(200).json({
+            data: response,
+            message: "Successfully deleted the review",
+            err: {},
+            success: true
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            data: {},
+            message: "Cannot delete the review",
+            err: error,
+            success: false
+        });
+    }
+}
+
+const getReviewsByRating = async (req, res) => {
+    try {
+        const response = await reviewService.getReviewsByRating(req.params.rating);
+        return res.status(200).json({
+            data: response,
+            message: "Successfully fetched the reviews",
+            err: {},
+            success: true
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            data: {},
+            message: "Cannot fetch the reviews",
+            err: error,
+            success: false
+        });
+    }
+}
+
 module.exports = {
-    createReview
+    createReview,
+    deleteReview,
+    getReviewsByRating
 }
